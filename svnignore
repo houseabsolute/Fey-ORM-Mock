@@ -1,0 +1,13 @@
+blib*
+Makefile.PL
+Makefile
+Makefile.old
+Build
+_build*
+pm_to_blib*
+*.tar.gz
+cover_db
+META.yml
+MANIFEST
+MANIFEST.bak
+README
