@@ -1,7 +1,8 @@
 use strict;
 use warnings;
 
-use Test::More tests => 26;
+use Test::Exception;
+use Test::More 'no_plan';
 
 use Fey::ORM::Mock;
 use Fey::Test;
@@ -142,4 +143,34 @@ is( User->_dbh()->{Driver}{Name}, 'Mock',
         'no actions for the Message class after clear_all' );
     is( scalar $mock->recorder()->actions_for_class('User'), 0,
         'no actions for the User class after clear_all' );
+}
+
+{
+    $mock->seed_class( User =>
+                       { user_id  => 42,
+                         username => 'Doug',
+                       },
+                       { user_id  => 666,
+                         username => 'Beelzy',
+                       },
+                     );
+
+    my $user = User->new( user_id => 2 );
+
+    is( $user->user_id(), 2,
+        'got constructor value for class' );
+    is( $user->username(), 'Doug',
+        'also got seeded values for class' );
+
+    $user = User->new( user_id => 666 );
+
+    is( $user->user_id(), 666,
+        'got constructor value for class' );
+    is( $user->username(), 'Beelzy',
+        'also got seeded values for class' );
+
+    throws_ok( sub { User->new( user_id => 10 ) },
+               qr/bind_columns/,
+               'cannot get a new user once seeder is exhausted'
+             );
 }

@@ -80,6 +80,38 @@ sub __recorder
         Fey::Meta::Class::Schema->ClassForSchema( $self->Table->schema )->Recorder();
 }
 
+sub _load_from_dbms
+{
+    my $self = shift;
+
+    if ( my $values = $self->Seeder()->next() )
+    {
+        $self->_set_column_values_from_hashref($values);
+
+        return;
+    }
+
+    return $self->SUPER::_load_from_dbms(@_);
+}
+
+{
+    my %Seeder;
+
+    sub Seeder
+    {
+        my $self = shift;
+
+        return $Seeder{ ref $self || $self };
+    }
+
+    sub SetSeeder
+    {
+        my $self = shift;
+
+        return $Seeder{ ref $self || $self } = shift;
+    }
+}
+
 no Moose;
 
 __PACKAGE__->meta()->make_immutable();

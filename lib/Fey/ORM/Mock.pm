@@ -11,6 +11,7 @@ use Fey::DBIManager;
 use Fey::Object::Mock::Schema;
 use Fey::Object::Mock::Table;
 use Fey::ORM::Mock::Recorder;
+use Fey::ORM::Mock::Seeder;
 use Fey::Meta::Class::Table;
 
 use Moose;
@@ -84,13 +85,26 @@ sub _replace_superclass
 
 sub _mock_table
 {
-    my $self       = shift;
+    my $self  = shift;
     my $table = shift;
 
     my $class = Fey::Meta::Class::Table->ClassForTable($table)
         or die "Cannot find a class for " . $table->name() . "\n";
 
     $self->_replace_superclass( $class, 'Fey::Object::Mock::Table' );
+
+    my $seed = Fey::ORM::Mock::Seeder->new();
+    $class->SetSeeder($seed);
+}
+
+sub seed_class
+{
+    my $self  = shift;
+    my $class = shift;
+
+    my $seed = $class->Seeder();
+
+    $seed->push_values(@_);
 }
 
 sub _mock_dbi
