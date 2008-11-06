@@ -10,27 +10,57 @@ use DBD::Mock;
 use Fey::DBIManager;
 use Fey::Object::Mock::Schema;
 use Fey::Object::Mock::Table;
+use Fey::ORM::Mock::Recorder;
 use Fey::Meta::Class::Table;
-use Params::Validate qw( validate_pos );
 
-use Exporter qw( import );
+use Moose;
 
-our @EXPORT = qw( mock_schema );
+has 'schema_class' =>
+    ( is       => 'ro',
+      isa      => 'ClassName',
+      required => 1,
+    );
+
+has 'dbh' =>
+    ( is       => 'rw',
+      isa      => 'DBI::db',
+      writer   => '_set_dbh',
+      init_arg => undef,
+    );
+
+has 'recorder' =>
+    ( is       => 'rw',
+      isa      => 'Fey::ORM::Mock::Recorder',
+      writer   => '_set_recorder',
+      init_arg => undef,
+    );
 
 
-sub mock_schema
+sub BUILD
 {
-    my ($schema) = validate_pos( @_, { isa => 'Fey::Object::Schema' } );
+    my $self = shift;
 
-    _replace_superclass( $schema, 'Fey::Object::Mock::Schema' );
+    $self->_mock_schema();
 
-    _mock_table($_) for $schema->Schema()->tables();
+    $self->_mock_dbi();
+}
 
-    _mock_dbi($schema);
+sub _mock_schema
+{
+    my $self = shift;
+
+    $self->_replace_superclass( $self->schema_class(), 'Fey::Object::Mock::Schema' );
+
+    my $recorder = Fey::ORM::Mock::Recorder->new();
+    $self->schema_class()->SetRecorder($recorder);
+    $self->_set_recorder($recorder);
+
+    $self->_mock_table($_) for $self->schema_class()->Schema()->tables();
 }
 
 sub _replace_superclass
 {
+    my $self       = shift;
     my $class      = shift;
     my $superclass = shift;
 
@@ -54,22 +84,28 @@ sub _replace_superclass
 
 sub _mock_table
 {
+    my $self       = shift;
     my $table = shift;
 
     my $class = Fey::Meta::Class::Table->ClassForTable($table)
         or die "Cannot find a class for " . $table->name() . "\n";
 
-    _replace_superclass( $class, 'Fey::Object::Mock::Table' );
+    $self->_replace_superclass( $class, 'Fey::Object::Mock::Table' );
 }
 
 sub _mock_dbi
 {
-    my $schema = shift;
+    my $self = shift;
+
+    my $dsn = 'dbi:Mock:';
+
+    my $dbh = DBI->connect( $dsn, q{}, q{} );
+    $self->_set_dbh($dbh);
 
     my $manager = Fey::DBIManager->new();
-    $manager->add_source( dsn => 'dbi:Mock:' );
+    $manager->add_source( dsn => $dsn, dbh => $dbh );
 
-    $schema->SetDBIManager($manager);
+    $self->schema_class()->SetDBIManager($manager);
 }
 
 1;
@@ -87,7 +123,7 @@ Fey::ORM::Mock - Mock Fey::ORM based classes so you can test without a database
     use Fey::ORM::Mock;
     use MyApp::Schema;
 
-    mock_schema('MyApp::Schema')
+    my $mock = Fey::ORM::Mock->new( schema_class => 'MyApp::Schema' );
 
     ...
 
@@ -103,10 +139,10 @@ Dave Rolsky, C<< <autarch@urth.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-fey-mock@rt.cpan.org>,
-or through the web interface at L<http://rt.cpan.org>.  I will be
-notified, and then you'll automatically be notified of progress on
-your bug as I make changes.
+Please report any bugs or feature requests to
+C<bug-fey-mock@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>.  I will be notified, and then you'll
+automatically be notified of progress on your bug as I make changes.
 
 =head1 COPYRIGHT & LICENSE
 

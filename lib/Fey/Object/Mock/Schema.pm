@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use DBD::Mock;
-use Fey::Object::Mock::Recorder;
 
 use Moose;
 
@@ -20,8 +19,14 @@ extends 'Fey::Object::Schema';
     {
         my $class = shift;
 
-        return
-            $Recorders{$class} ||= Fey::Object::Mock::Recorder->new();
+        return $Recorders{$class};
+    }
+
+    sub SetRecorder
+    {
+        my $class = shift;
+
+        $Recorders{$class} = shift;
     }
 }
 

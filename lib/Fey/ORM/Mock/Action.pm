@@ -1,4 +1,4 @@
-package Fey::Object::Mock::Action;
+package Fey::ORM::Mock::Action;
 
 use strict;
 use warnings;
@@ -47,9 +47,9 @@ sub new_action
 }
 
 # needs to come after attributes are defined
-require Fey::Object::Mock::Action::Insert;
-require Fey::Object::Mock::Action::Update;
-require Fey::Object::Mock::Action::Delete;
+require Fey::ORM::Mock::Action::Insert;
+require Fey::ORM::Mock::Action::Update;
+require Fey::ORM::Mock::Action::Delete;
 
 no Moose;
 no Moose::Util::TypeConstraints;

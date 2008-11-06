@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 25;
+use Test::More tests => 26;
 
 use Fey::ORM::Mock;
 use Fey::Test;
@@ -49,7 +49,7 @@ use Fey::Test;
     has_table( $Schema->table('UserGroup') );
 }
 
-mock_schema('Test::Schema');
+my $mock = Fey::ORM::Mock->new( schema_class => 'Test::Schema' );
 
 ok( Test::Schema->isa('Fey::Object::Mock::Schema'),
     'after mock_schema() Test::Schema inherits from Fey::Object::Mock::Schema' );
@@ -60,8 +60,11 @@ for my $class ( qw( User Message Group UserGroup ) )
         "after mock_schema() $class inherits from Fey::Object::Mock::Table" );
 }
 
-isa_ok( Test::Schema->Recorder(), 'Fey::Object::Mock::Recorder',
+isa_ok( Test::Schema->Recorder(), 'Fey::ORM::Mock::Recorder',
         'Test::Schema->Recorder() returns a new recorder object' );
+
+is( $mock->recorder(), Test::Schema->Recorder(),
+    'recorder for mock object and schema class are identical' );
 
 is( User->_dbh()->{Driver}{Name}, 'Mock',
     'DBI handle is for DBD::Mock' );
@@ -72,10 +75,10 @@ is( User->_dbh()->{Driver}{Name}, 'Mock',
     isa_ok( $user, 'User',
             'mocked insert() return an object' );
 
-    is( scalar Test::Schema->Recorder()->actions_for_class('Message'), 0,
+    is( scalar $mock->recorder()->actions_for_class('Message'), 0,
         'no actions for the Message class' );
 
-    my @actions = Test::Schema->Recorder()->actions_for_class('User');
+    my @actions = $mock->recorder()->actions_for_class('User');
     is( scalar @actions, 1,
         'one action for the User class' );
 
@@ -87,8 +90,8 @@ is( User->_dbh()->{Driver}{Name}, 'Mock',
                { username => 'Bob' },
                'action values contains expected data' );
 
-    Test::Schema->Recorder()->clear_class('User');
-    is( scalar Test::Schema->Recorder()->actions_for_class('User'), 0,
+    $mock->recorder()->clear_class('User');
+    is( scalar $mock->recorder()->actions_for_class('User'), 0,
         'no actions for the User class after clearing' );
 }
 
@@ -102,10 +105,10 @@ is( User->_dbh()->{Driver}{Name}, 'Mock',
 
     my $message = Message->insert( message => 'blah blah' );
 
-    is( scalar Test::Schema->Recorder()->actions_for_class('Message'), 1,
+    is( scalar $mock->recorder()->actions_for_class('Message'), 1,
         'one action for the Message class' );
 
-    my @actions = Test::Schema->Recorder()->actions_for_class('User');
+    my @actions = $mock->recorder()->actions_for_class('User');
     is( scalar @actions, 2,
         'two actions for the User class' );
 
@@ -124,7 +127,7 @@ is( User->_dbh()->{Driver}{Name}, 'Mock',
 
     $user->delete();
 
-    @actions = Test::Schema->Recorder()->actions_for_class('User');
+    @actions = $mock->recorder()->actions_for_class('User');
     is( scalar @actions, 3,
         'three actions for the User class after deleting user' );
     is( $actions[2]->type(), 'delete',
@@ -133,10 +136,10 @@ is( User->_dbh()->{Driver}{Name}, 'Mock',
                { user_id => 33 },
                'delete pk contains expected data' );
 
-    Test::Schema->Recorder()->clear_all();
+    $mock->recorder()->clear_all();
 
-    is( scalar Test::Schema->Recorder()->actions_for_class('Message'), 0,
+    is( scalar $mock->recorder()->actions_for_class('Message'), 0,
         'no actions for the Message class after clear_all' );
-    is( scalar Test::Schema->Recorder()->actions_for_class('User'), 0,
+    is( scalar $mock->recorder()->actions_for_class('User'), 0,
         'no actions for the User class after clear_all' );
 }

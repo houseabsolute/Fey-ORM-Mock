@@ -1,15 +1,15 @@
-package Fey::Object::Mock::Recorder;
+package Fey::ORM::Mock::Recorder;
 
 use strict;
 use warnings;
 
-use Fey::Object::Mock::Action;
+use Fey::ORM::Mock::Action;
 
 use Moose;
 
 has '_actions' =>
     ( is      => 'ro',
-      isa     => 'HashRef[ArrayRef[Fey::Object::Mock::Action]]',
+      isa     => 'HashRef[ArrayRef[Fey::ORM::Mock::Action]]',
       default => sub { {} },
     );
 
@@ -18,7 +18,7 @@ sub record_action
 {
     my $self = shift;
 
-    my $action = Fey::Object::Mock::Action->new_action(@_);
+    my $action = Fey::ORM::Mock::Action->new_action(@_);
 
     $self->_actions()->{ $action->class() } ||= [];
     push @{ $self->_actions()->{ $action->class() } }, $action;

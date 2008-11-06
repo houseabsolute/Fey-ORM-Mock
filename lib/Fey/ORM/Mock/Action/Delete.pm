@@ -1,4 +1,4 @@
-package Fey::Object::Mock::Action::Delete;
+package Fey::ORM::Mock::Action::Delete;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use warnings;
 use Moose;
 use MooseX::StrictConstructor;
 
-extends 'Fey::Object::Mock::Action';
+extends 'Fey::ORM::Mock::Action';
 
 has 'pk' =>
     ( is       => 'ro',

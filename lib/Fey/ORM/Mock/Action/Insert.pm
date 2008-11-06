@@ -1,4 +1,4 @@
-package Fey::Object::Mock::Action::Insert;
+package Fey::ORM::Mock::Action::Insert;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use warnings;
 use Moose;
 use MooseX::StrictConstructor;
 
-extends 'Fey::Object::Mock::Action';
+extends 'Fey::ORM::Mock::Action';
 
 has 'values' =>
     ( is       => 'ro',
