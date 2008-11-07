@@ -11,7 +11,7 @@ my $builder = Module::Build->new
                               'Fey::DBIManager'           => '0',
                               'Fey::ORM'                  => '0.12',
                               'Moose'                     => '0',
-                              'MooseX::Param::Validate'   => '0',
+                              'MooseX::Params::Validate'  => '0',
                               'MooseX::StrictConstructor' => '0',
                             },
       build_requires     => { 'Fey::Test' => '0.05',
