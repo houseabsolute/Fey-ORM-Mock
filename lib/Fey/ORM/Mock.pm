@@ -71,7 +71,7 @@ sub _replace_superclass
 
     $meta->superclasses($superclass);
 
-    $meta->make_immutable($immutable_options)
+    $meta->make_immutable( %{ $immutable_options } )
         if $immutable_options;
 }
 
