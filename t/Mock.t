@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::Exception;
-use Test::More tests => 31;
+use Test::More tests => 32;
 
 use Fey::ORM::Mock;
 use Fey::Test;
@@ -27,6 +27,17 @@ use Fey::Test;
     use Fey::ORM::Table;
 
     has_table( $Schema->table('User') );
+
+    before 'update' => sub { push @User::Modifiers, 'before2' };
+    before 'update' => sub { push @User::Modifiers, 'before1' };
+    around 'update' => sub { push @User::Modifiers, 'around2';
+                             my $orig = shift;
+                             return shift->$orig(@_) };
+    around 'update' => sub { push @User::Modifiers, 'around1';
+                             my $orig = shift;
+                             return shift->$orig(@_) };
+    after  'update' => sub { push @User::Modifiers, 'after1' };
+    after  'update' => sub { push @User::Modifiers, 'after2' };
 
 
     package Message;
@@ -103,6 +114,12 @@ is( User->_dbh()->{Driver}{Name}, 'Mock',
     $user->update( username => 'John',
                    email    => 'john@example.com',
                  );
+
+    is_deeply( \@User::Modifiers,
+               [ qw( before1 before2
+                     around1 around2
+                     after1 after2 ) ],
+               'method modifiers are reapplied properly' );
 
     my $message = Message->insert( message => 'blah blah' );
 

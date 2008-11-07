@@ -71,8 +71,40 @@ sub _replace_superclass
 
     $meta->superclasses($superclass);
 
+    $self->_reapply_method_modifiers($meta);
+
     $meta->make_immutable( %{ $immutable_options } )
         if $immutable_options;
+}
+
+sub _reapply_method_modifiers
+{
+    my $self = shift;
+    my $meta = shift;
+
+    for my $method ( grep { $_->isa('Class::MOP::Method::Wrapped') }
+                     map { $meta->get_method($_) }
+                     $meta->get_method_list() )
+    {
+        next if $method->get_original_method()->package_name() eq $meta->name();
+
+        $meta->remove_method( $method->name() );
+
+        for my $before ( reverse $method->before_modifiers() )
+        {
+            $meta->add_before_method_modifier( $method->name() => $before );
+        }
+
+        for my $after ( $method->after_modifiers() )
+        {
+            $meta->add_after_method_modifier( $method->name() => $after );
+        }
+
+        for my $around ( reverse $method->around_modifiers() )
+        {
+            $meta->add_around_method_modifier( $method->name() => $around );
+        }
+    }
 }
 
 sub _mock_table

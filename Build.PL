@@ -6,7 +6,7 @@ use Module::Build;
 my $builder = Module::Build->new
     ( module_name        => 'Fey::ORM::Mock',
       license            => 'perl',
-      requires           => { 'Class::MOP'                => 0,
+      requires           => { 'Class::MOP'                => '0.69',
                               'DBD::Mock'                 => '0',
                               'Fey::DBIManager'           => '0.08',
                               'Fey::ORM'                  => '0.12',
