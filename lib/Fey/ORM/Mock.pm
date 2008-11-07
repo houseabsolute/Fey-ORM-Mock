@@ -81,7 +81,7 @@ sub _mock_table
     my $table = shift;
 
     my $class = Fey::Meta::Class::Table->ClassForTable($table)
-        or die "Cannot find a class for " . $table->name() . "\n";
+        or return;
 
     $self->_replace_superclass( $class, 'Fey::Object::Mock::Table' );
 
@@ -163,7 +163,8 @@ This class provides the following methods:
 
 Given a schema class (one which uses C<Fey::ORM::Schema>), this method
 adds a mocking layer to the schema class and all of its tables'
-associated classes.
+associated classes. If a table does not have an associated class, it
+will simply be skipped.
 
 It also replaces the schema class's existing C<Fey::DBIManager> object
 with one that has a single C<DBD::Mock> handle.
