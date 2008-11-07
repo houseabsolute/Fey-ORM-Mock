@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::Exception;
-use Test::More 'no_plan';
+use Test::More tests => 31;
 
 use Fey::ORM::Mock;
 use Fey::Test;
