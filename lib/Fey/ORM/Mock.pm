@@ -62,18 +62,17 @@ sub _replace_superclass
 
     my $meta = $class->meta();
 
-    my $was_immutable = 0;
-
+    my $immutable_options;
     if ( $meta->is_immutable() )
     {
-        $was_immutable = 1;
+        $immutable_options = $meta->get_immutable_options();
         $meta->make_mutable();
     }
 
     $meta->superclasses($superclass);
 
-    $meta->make_immutable()
-        if $was_immutable;
+    $meta->make_immutable($immutable_options)
+        if $immutable_options;
 }
 
 sub _mock_table
