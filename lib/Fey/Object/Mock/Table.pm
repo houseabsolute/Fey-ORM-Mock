@@ -117,3 +117,47 @@ no Moose;
 __PACKAGE__->meta()->make_immutable();
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Fey::Object::Mock::Table - Mock schema class subclass of Fey::Object::Table
+
+=head1 DESCRIPTION
+
+When you use L<Fey::ORM::Mock> to mock a schema, this class will
+become the immediate parent for each of your table classes. It in turn
+inherits from C<Fey::Object::Table>.
+
+This class overrides various methods in order to record inserts,
+updates, and deletes. It also overrides C<_load_from_dbms()> in order
+to use seeded values rather than fetching data from the DBMS.
+
+=head1 METHODS
+
+This class provides the following methods:
+
+=head2 $class->Seeder
+
+Returns the L<Fey::ORM::Mock::Seeder> object associated with the
+table.
+
+=head2 $class->SetSeeder($seeder)
+
+Sets the L<Fey::ORM::Mock::Recorder> object associated with the table.
+
+=head1 AUTHOR
+
+Dave Rolsky, C<< <autarch@urth.org> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2008 Dave Rolsky, All Rights Reserved.
+
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut

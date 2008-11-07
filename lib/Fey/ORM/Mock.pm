@@ -22,13 +22,6 @@ has 'schema_class' =>
       required => 1,
     );
 
-has 'dbh' =>
-    ( is       => 'rw',
-      isa      => 'DBI::db',
-      writer   => '_set_dbh',
-      init_arg => undef,
-    );
-
 has 'recorder' =>
     ( is       => 'rw',
       isa      => 'Fey::ORM::Mock::Recorder',
@@ -114,7 +107,6 @@ sub _mock_dbi
     my $dsn = 'dbi:Mock:';
 
     my $dbh = DBI->connect( $dsn, q{}, q{} );
-    $self->_set_dbh($dbh);
 
     my $manager = Fey::DBIManager->new();
     $manager->add_source( dsn => $dsn, dbh => $dbh );
@@ -139,13 +131,65 @@ Fey::ORM::Mock - Mock Fey::ORM based classes so you can test without a database
 
     my $mock = Fey::ORM::Mock->new( schema_class => 'MyApp::Schema' );
 
-    ...
+    $mock->seed_class( 'MyApp::User' =>
+                       { user_id => 42,
+                         name    => 'Doug',
+                       },
+                       ...
+                     );
+
+    # gets seeded data first
+    my $user = User->new( ... );
+
+    $user = User->insert( ... );
+    $user->update( ... );
+
+    my @actions = $mock->recorder()->actions_for_class('User');
 
 =head1 DESCRIPTION
 
+This class lets you mock a set of C<Fey::ORM> based classes. You can
+seed data for each class's constructor, as well as track all inserts,
+update, and deletes for each class.
+
+This is all done at a higher level than is possible just using
+C<DBD::Mock>. Instead of dealing with SQL and DBI's data structures,
+you are able to work with the named attributes of each class.
+
 =head1 METHODS
 
-This class provides the following methods
+This class provides the following methods:
+
+=head2 Fey::ORM::Mock->new( schema_class => $class )
+
+Given a schema class (one which uses C<Fey::ORM::Schema>), this method
+adds a mocking layer to the schema class and all of its tables'
+associated classes.
+
+It also replaces the schema class's existing C<Fey::DBIManager> object
+with one that has a single C<DBD::Mock> handle.
+
+=head2 $mock->schema_class()
+
+The schema class name that was passed to the constructor.
+
+=head2 $mock->recorder()
+
+Returns the L<Fey::ORM::Mock::Recorder> object that records all
+inserts, updates, and deletes for tables in this schema.
+
+=head2 $mock->seed_class( $class => \%attr, \%attr, ... )
+
+This method accepts a class name and one or more hash references. Each
+hash reference should consist of some or all of the class's attributes
+and associated values.
+
+These seeded hash references will be used the next time C<<
+$class->new() >> is called without the "_from_query" parameter. This
+prevents an attempt to fetch data from the database handle.
+
+Note that any attribute values you pass to the constructor will
+override seeded values.
 
 =head1 AUTHOR
 
