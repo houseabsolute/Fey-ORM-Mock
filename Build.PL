@@ -8,7 +8,7 @@ my $builder = Module::Build->new
       license            => 'perl',
       requires           => { 'Class::MOP'                => 0,
                               'DBD::Mock'                 => '0',
-                              'Fey::DBIManager'           => '0',
+                              'Fey::DBIManager'           => '0.08',
                               'Fey::ORM'                  => '0.12',
                               'Moose'                     => '0',
                               'MooseX::Params::Validate'  => '0',
