@@ -24,6 +24,18 @@ has type =>
       required => 1,
     );
 
+for my $type ( qw( insert update delete ) )
+{
+    my $attr = 'is_' . $type;
+
+    my $t = $type;
+    has $attr =>
+        ( is      => 'ro',
+          isa     => 'Bool',
+          lazy    => 1,
+          default => sub { $_[0]->type() eq $t },
+        );
+}
 
 sub new_action
 {
