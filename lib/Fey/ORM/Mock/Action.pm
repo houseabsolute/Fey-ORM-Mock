@@ -105,6 +105,14 @@ Returns the associated class for an action.
 Returns the type for an action, one of "insert", "update", or
 "delete".
 
+=head2 $action->is_insert()
+
+=head2 $action->is_update()
+
+=head2 $action->is_delete()
+
+These are convenience methods for checking an action's type.
+
 =head1 AUTHOR
 
 Dave Rolsky, C<< <autarch@urth.org> >>
