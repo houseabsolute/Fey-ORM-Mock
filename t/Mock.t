@@ -28,6 +28,7 @@ use Fey::Test;
 
     has_table( $Schema->table('User') );
 
+    # to test method modifier re-application
     before 'update' => sub { push @User::Modifiers, 'before2' };
     before 'update' => sub { push @User::Modifiers, 'before1' };
     around 'update' => sub { push @User::Modifiers, 'around2';
