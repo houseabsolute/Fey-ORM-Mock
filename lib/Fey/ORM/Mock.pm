@@ -153,7 +153,7 @@ __END__
 
 =head1 NAME
 
-Fey::ORM::Mock - Mock Fey::ORM based classes so you can test without a database
+Fey::ORM::Mock - Mock Fey::ORM based classes so you can test without a DBMS
 
 =head1 SYNOPSIS
 
