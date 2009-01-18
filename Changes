@@ -1,3 +1,9 @@
+0.02    2009-01-18
+
+- Small fix to shut up a warning when used with recent versions of
+  Moose.
+
+
 0.01    2008-11-08
 
 - First version, released on an unsuspecting world.
