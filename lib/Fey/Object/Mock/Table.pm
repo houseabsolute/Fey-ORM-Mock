@@ -114,7 +114,10 @@ sub _load_from_dbms
 
 no Moose;
 
-__PACKAGE__->meta()->make_immutable();
+# inlining the constructor makes no sense, since we expect to be
+# inherited from anyway, and those modules can inline their own
+# constructor.
+__PACKAGE__->meta()->make_immutable( inline_constructor => 0 );
 
 1;
 
