@@ -1,0 +1,12 @@
+syntax: glob
+.\#*
+\#*\#
+blib*
+cover_db*
+Build
+_build
+MANIFEST
+META.yml
+Makefile.PL
+README
+Debian_CPANTS.txt
