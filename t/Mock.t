@@ -60,6 +60,9 @@ use Fey::Test;
     use Fey::ORM::Table;
 
     has_table( $Schema->table('UserGroup') );
+
+    # Want to test with at least one immutable class
+    __PACKAGE__->meta()->make_immutable();
 }
 
 my $mock = Fey::ORM::Mock->new( schema_class => 'Test::Schema' );

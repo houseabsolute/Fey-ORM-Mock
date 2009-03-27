@@ -62,19 +62,19 @@ sub _replace_superclass
 
     my $meta = $class->meta();
 
-    my $immutable_options;
+    my $was_immutable;
     if ( $meta->is_immutable() )
     {
-        $immutable_options = $meta->get_immutable_options();
         $meta->make_mutable();
+        $was_immutable = 1;
     }
 
     $meta->superclasses($superclass);
 
     $self->_reapply_method_modifiers($meta);
 
-    $meta->make_immutable( %{ $immutable_options } )
-        if $immutable_options;
+    $meta->make_immutable()
+        if $was_immutable;
 }
 
 sub _reapply_method_modifiers
