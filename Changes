@@ -1,3 +1,9 @@
+0.03    2009-03-27
+
+- Fixes to work with Moose 0.72_01+, but it still works with earlier
+  Moose as well.
+
+
 0.02    2009-01-18
 
 - Small fix to shut up a warning when used with recent versions of
