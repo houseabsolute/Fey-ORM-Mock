@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::Exception;
-use Test::More tests => 9;
+use Test::More;
 
 use Fey::ORM::Mock::Action;
 
@@ -76,3 +76,5 @@ use Fey::ORM::Mock::Action;
         'is_delete is true for delete'
     );
 }
+
+done_testing();

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::Exception;
-use Test::More tests => 32;
+use Test::More;
 
 use Fey::ORM::Mock;
 use Fey::Test;
@@ -256,3 +256,5 @@ is(
         'cannot get a new user once seeder is exhausted'
     );
 }
+
+done_testing();
