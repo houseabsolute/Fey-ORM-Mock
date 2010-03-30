@@ -5,15 +5,16 @@ use warnings;
 
 use Moose;
 
-has '_data' =>
-    ( metaclass => 'Collection::Array',
-      is        => 'ro',
-      isa       => 'ArrayRef[HashRef]',
-      default   => sub { [] },
-      provides  => { push  => 'push_values',
-                     shift => 'next',
-                   },
-    );
+has '_data' => (
+    metaclass => 'Collection::Array',
+    is        => 'ro',
+    isa       => 'ArrayRef[HashRef]',
+    default   => sub { [] },
+    provides  => {
+        push  => 'push_values',
+        shift => 'next',
+    },
+);
 
 no Moose;
 

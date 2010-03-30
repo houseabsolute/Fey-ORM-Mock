@@ -9,21 +9,18 @@ use Moose;
 
 extends 'Fey::Object::Schema';
 
-
 # It'd be nice to use MooseX::ClassAttribute, but then we end up with
 # a metaclass incompatibility, and shit blows up.
 {
     my %Recorders;
 
-    sub Recorder
-    {
+    sub Recorder {
         my $class = shift;
 
         return $Recorders{$class};
     }
 
-    sub SetRecorder
-    {
+    sub SetRecorder {
         my $class = shift;
 
         $Recorders{$class} = shift;

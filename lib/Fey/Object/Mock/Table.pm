@@ -9,9 +9,7 @@ use Moose;
 
 extends 'Fey::Object::Table';
 
-
-sub insert_many
-{
+sub insert_many {
     my $class = shift;
     my @rows  = @_;
 
@@ -20,41 +18,39 @@ sub insert_many
     return $class->SUPER::insert_many(@rows);
 }
 
-sub __record_insert
-{
+sub __record_insert {
     my $class = shift;
     my $vals  = shift;
 
-    $class->__recorder->record_action( action => 'insert',
-                                       class  => $class,
-                                       values => $vals,
-                                     );
+    $class->__recorder->record_action(
+        action => 'insert',
+        class  => $class,
+        values => $vals,
+    );
 }
 
-sub update
-{
+sub update {
     my $self = shift;
     my %p    = @_;
 
-    $self->__record_update(\%p);
+    $self->__record_update( \%p );
 
     $self->SUPER::update(%p);
 }
 
-sub __record_update
-{
+sub __record_update {
     my $self = shift;
     my $vals = shift;
 
-    $self->__recorder->record_action( action => 'update',
-                                      class  => ( ref $self ),
-                                      values => $vals,
-                                      pk     => { $self->pk_values_hash() },
-                                    );
+    $self->__recorder->record_action(
+        action => 'update',
+        class  => ( ref $self ),
+        values => $vals,
+        pk     => { $self->pk_values_hash() },
+    );
 }
 
-sub delete
-{
+sub delete {
     my $self = shift;
 
     $self->__record_delete();
@@ -62,30 +58,27 @@ sub delete
     $self->SUPER::delete(@_);
 }
 
-sub __record_delete
-{
+sub __record_delete {
     my $self = shift;
 
-    $self->__recorder->record_action( action => 'delete',
-                                      class  => ( ref $self ),
-                                      pk     => { $self->pk_values_hash() },
-                                    );
+    $self->__recorder->record_action(
+        action => 'delete',
+        class  => ( ref $self ),
+        pk     => { $self->pk_values_hash() },
+    );
 }
 
-sub __recorder
-{
+sub __recorder {
     my $self = shift;
 
-    return
-        Fey::Meta::Class::Schema->ClassForSchema( $self->Table->schema )->Recorder();
+    return Fey::Meta::Class::Schema->ClassForSchema( $self->Table->schema )
+        ->Recorder();
 }
 
-sub _load_from_dbms
-{
+sub _load_from_dbms {
     my $self = shift;
 
-    if ( my $values = $self->Seeder()->next() )
-    {
+    if ( my $values = $self->Seeder()->next() ) {
         $self->_set_column_values_from_hashref($values);
 
         return;
@@ -97,15 +90,13 @@ sub _load_from_dbms
 {
     my %Seeder;
 
-    sub Seeder
-    {
+    sub Seeder {
         my $self = shift;
 
         return $Seeder{ ref $self || $self };
     }
 
-    sub SetSeeder
-    {
+    sub SetSeeder {
         my $self = shift;
 
         return $Seeder{ ref $self || $self } = shift;

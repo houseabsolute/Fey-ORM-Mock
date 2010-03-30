@@ -16,22 +16,20 @@ use Fey::Meta::Class::Table;
 
 use Moose;
 
-has 'schema_class' =>
-    ( is       => 'ro',
-      isa      => 'ClassName',
-      required => 1,
-    );
+has 'schema_class' => (
+    is       => 'ro',
+    isa      => 'ClassName',
+    required => 1,
+);
 
-has 'recorder' =>
-    ( is       => 'rw',
-      isa      => 'Fey::ORM::Mock::Recorder',
-      writer   => '_set_recorder',
-      init_arg => undef,
-    );
+has 'recorder' => (
+    is       => 'rw',
+    isa      => 'Fey::ORM::Mock::Recorder',
+    writer   => '_set_recorder',
+    init_arg => undef,
+);
 
-
-sub BUILD
-{
+sub BUILD {
     my $self = shift;
 
     $self->_mock_schema();
@@ -39,11 +37,11 @@ sub BUILD
     $self->_mock_dbi();
 }
 
-sub _mock_schema
-{
+sub _mock_schema {
     my $self = shift;
 
-    $self->_replace_superclass( $self->schema_class(), 'Fey::Object::Mock::Schema' );
+    $self->_replace_superclass( $self->schema_class(),
+        'Fey::Object::Mock::Schema' );
 
     my $recorder = Fey::ORM::Mock::Recorder->new();
     $self->schema_class()->SetRecorder($recorder);
@@ -52,8 +50,7 @@ sub _mock_schema
     $self->_mock_table($_) for $self->schema_class()->Schema()->tables();
 }
 
-sub _replace_superclass
-{
+sub _replace_superclass {
     my $self       = shift;
     my $class      = shift;
     my $superclass = shift;
@@ -63,8 +60,7 @@ sub _replace_superclass
     my $meta = $class->meta();
 
     my $was_immutable;
-    if ( $meta->is_immutable() )
-    {
+    if ( $meta->is_immutable() ) {
         $meta->make_mutable();
         $was_immutable = 1;
     }
@@ -77,38 +73,35 @@ sub _replace_superclass
         if $was_immutable;
 }
 
-sub _reapply_method_modifiers
-{
+sub _reapply_method_modifiers {
     my $self = shift;
     my $meta = shift;
 
-    for my $method ( grep { $_->isa('Class::MOP::Method::Wrapped') }
-                     map { $meta->get_method($_) }
-                     $meta->get_method_list() )
-    {
-        next if $method->get_original_method()->package_name() eq $meta->name();
+    for my $method (
+        grep { $_->isa('Class::MOP::Method::Wrapped') }
+        map  { $meta->get_method($_) } $meta->get_method_list()
+        ) {
+        next
+            if $method->get_original_method()->package_name() eq
+                $meta->name();
 
         $meta->remove_method( $method->name() );
 
-        for my $before ( reverse $method->before_modifiers() )
-        {
+        for my $before ( reverse $method->before_modifiers() ) {
             $meta->add_before_method_modifier( $method->name() => $before );
         }
 
-        for my $after ( $method->after_modifiers() )
-        {
+        for my $after ( $method->after_modifiers() ) {
             $meta->add_after_method_modifier( $method->name() => $after );
         }
 
-        for my $around ( reverse $method->around_modifiers() )
-        {
+        for my $around ( reverse $method->around_modifiers() ) {
             $meta->add_around_method_modifier( $method->name() => $around );
         }
     }
 }
 
-sub _mock_table
-{
+sub _mock_table {
     my $self  = shift;
     my $table = shift;
 
@@ -121,8 +114,7 @@ sub _mock_table
     $class->SetSeeder($seed);
 }
 
-sub seed_class
-{
+sub seed_class {
     my $self  = shift;
     my $class = shift;
 
@@ -131,8 +123,7 @@ sub seed_class
     $seed->push_values(@_);
 }
 
-sub _mock_dbi
-{
+sub _mock_dbi {
     my $self = shift;
 
     my $dsn = 'dbi:Mock:';

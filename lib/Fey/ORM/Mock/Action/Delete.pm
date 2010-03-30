@@ -8,11 +8,11 @@ use MooseX::StrictConstructor;
 
 extends 'Fey::ORM::Mock::Action';
 
-has 'pk' =>
-    ( is       => 'ro',
-      isa      => 'HashRef[Value]',
-      required => 1,
-    );
+has 'pk' => (
+    is       => 'ro',
+    isa      => 'HashRef[Value]',
+    required => 1,
+);
 
 no Moose;
 

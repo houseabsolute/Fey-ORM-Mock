@@ -8,48 +8,48 @@ use MooseX::StrictConstructor;
 use Moose::Util::TypeConstraints;
 use MooseX::Params::Validate qw( validate );
 
-has class =>
-    ( is       => 'ro',
-      isa      => 'ClassName',
-      required => 1,
-    );
+has class => (
+    is       => 'ro',
+    isa      => 'ClassName',
+    required => 1,
+);
 
-subtype 'Fey.Mock.ORM.ActionType'
-    => as 'Str'
-    => where { $_[0] =~ /^(?:insert|update|delete)$/ };
+subtype 'Fey.Mock.ORM.ActionType' => as 'Str' =>
+    where { $_[0] =~ /^(?:insert|update|delete)$/ };
 
-has type =>
-    ( is       => 'ro',
-      isa      => 'Fey.Mock.ORM.ActionType',
-      required => 1,
-    );
+has type => (
+    is       => 'ro',
+    isa      => 'Fey.Mock.ORM.ActionType',
+    required => 1,
+);
 
-for my $type ( qw( insert update delete ) )
-{
+for my $type (qw( insert update delete )) {
     my $attr = 'is_' . $type;
 
     my $t = $type;
-    has $attr =>
-        ( is      => 'ro',
-          isa     => 'Bool',
-          lazy    => 1,
-          default => sub { $_[0]->type() eq $t },
-        );
+    has $attr => (
+        is      => 'ro',
+        isa     => 'Bool',
+        lazy    => 1,
+        default => sub { $_[0]->type() eq $t },
+    );
 }
 
-sub new_action
-{
+sub new_action {
     my $class = shift;
-    my %p     = validate( \@_,
-                          action => { isa => 'Fey.Mock.ORM.ActionType' },
-                          class  => { isa => 'ClassName' },
-                          values => { isa      => 'HashRef',
-                                      optional => 1,
-                                    },
-                          pk     => { isa      => 'HashRef',
-                                      optional => 1,
-                                    },
-                        );
+    my %p     = validate(
+        \@_,
+        action => { isa => 'Fey.Mock.ORM.ActionType' },
+        class  => { isa => 'ClassName' },
+        values => {
+            isa      => 'HashRef',
+            optional => 1,
+        },
+        pk => {
+            isa      => 'HashRef',
+            optional => 1,
+        },
+    );
 
     my $action = delete $p{action};
 
