@@ -3,7 +3,7 @@ package Fey::ORM::Mock;
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Class::MOP;
 use DBD::Mock;
