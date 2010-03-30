@@ -11,7 +11,7 @@ my $builder = Module::Build->new(
         'DBD::Mock'                 => '0',
         'Fey::DBIManager'           => '0.08',
         'Fey::ORM'                  => '0.12',
-        'Moose'                     => '0',
+        'Moose'                     => '0.90',
         'MooseX::Params::Validate'  => '0',
         'MooseX::StrictConstructor' => '0',
     },
