@@ -112,13 +112,11 @@ __PACKAGE__->meta()->make_immutable( inline_constructor => 0 );
 
 1;
 
+# ABSTRACT: Mock schema class subclass of Fey::Object::Table
+
 __END__
 
 =pod
-
-=head1 NAME
-
-Fey::Object::Mock::Table - Mock schema class subclass of Fey::Object::Table
 
 =head1 DESCRIPTION
 
@@ -142,16 +140,5 @@ table.
 =head2 $class->SetSeeder($seeder)
 
 Sets the L<Fey::ORM::Mock::Recorder> object associated with the table.
-
-=head1 AUTHOR
-
-Dave Rolsky, C<< <autarch@urth.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Dave Rolsky, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

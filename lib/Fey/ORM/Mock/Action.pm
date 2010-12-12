@@ -70,13 +70,11 @@ __PACKAGE__->meta()->make_immutable();
 
 1;
 
+# ABSTRACT: Factory and base class for recorded actions
+
 __END__
 
 =pod
-
-=head1 NAME
-
-Fey::ORM::Mock::Action - Factory and base class for recorded actions
 
 =head1 DESCRIPTION
 
@@ -112,16 +110,5 @@ Returns the type for an action, one of "insert", "update", or
 =head2 $action->is_delete()
 
 These are convenience methods for checking an action's type.
-
-=head1 AUTHOR
-
-Dave Rolsky, C<< <autarch@urth.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Dave Rolsky, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

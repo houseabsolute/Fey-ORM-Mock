@@ -22,13 +22,11 @@ __PACKAGE__->meta()->make_immutable();
 
 1;
 
+# ABSTRACT: Stores seeded data for future object construction
+
 __END__
 
 =pod
-
-=head1 NAME
-
-Fey::ORM::Mock::Seeder - Stores seeded data for future object construction
 
 =head1 DESCRIPTION
 
@@ -51,16 +49,5 @@ This seeds the constructor parameters for the given class.
 =head2 $recorder->next($class)
 
 Returns the next set of values for given class, if any exist.
-
-=head1 AUTHOR
-
-Dave Rolsky, C<< <autarch@urth.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Dave Rolsky, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

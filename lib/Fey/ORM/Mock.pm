@@ -3,8 +3,6 @@ package Fey::ORM::Mock;
 use strict;
 use warnings;
 
-our $VERSION = '0.04';
-
 use Class::MOP;
 use DBD::Mock;
 use Fey::DBIManager;
@@ -138,13 +136,11 @@ sub _mock_dbi {
 
 1;
 
+# ABSTRACT: Mock Fey::ORM based classes so you can test without a DBMS
+
 __END__
 
 =pod
-
-=head1 NAME
-
-Fey::ORM::Mock - Mock Fey::ORM based classes so you can test without a DBMS
 
 =head1 SYNOPSIS
 
@@ -214,22 +210,11 @@ prevents an attempt to fetch data from the database handle.
 Note that any attribute values you pass to the constructor will
 override seeded values.
 
-=head1 AUTHOR
-
-Dave Rolsky, C<< <autarch@urth.org> >>
-
 =head1 BUGS
 
 Please report any bugs or feature requests to
 C<bug-fey-mock@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Dave Rolsky, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

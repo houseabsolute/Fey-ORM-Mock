@@ -52,13 +52,11 @@ __PACKAGE__->meta()->make_immutable();
 
 1;
 
+# ABSTRACT: Records the history of changes for a class
+
 __END__
 
 =pod
-
-=head1 NAME
-
-Fey::ORM::Mock::Recorder - Records the history of changes for a class
 
 =head1 DESCRIPTION
 
@@ -89,16 +87,5 @@ Clears the record of actions for the class
 =head2 $recorder->clear_all()
 
 Clears the records for all classes.
-
-=head1 AUTHOR
-
-Dave Rolsky, C<< <autarch@urth.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Dave Rolsky, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

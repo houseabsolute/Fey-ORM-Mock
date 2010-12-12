@@ -20,13 +20,11 @@ __PACKAGE__->meta()->make_immutable();
 
 1;
 
+# ABSTRACT: A record of a deletion
+
 __END__
 
 =pod
-
-=head1 NAME
-
-Fey::ORM::Mock::Action::Delete - A record of a deletion
 
 =head1 DESCRIPTION
 
@@ -41,16 +39,5 @@ This class provides the following methods:
 
 Returns the primary key of the row deleted as a hash reference, with
 the attribute names as keys.
-
-=head1 AUTHOR
-
-Dave Rolsky, C<< <autarch@urth.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Dave Rolsky, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut

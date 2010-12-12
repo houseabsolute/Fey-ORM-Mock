@@ -26,13 +26,11 @@ __PACKAGE__->meta()->make_immutable();
 
 1;
 
+# ABSTRACT: A record of an update
+
 __END__
 
 =pod
-
-=head1 NAME
-
-Fey::ORM::Mock::Action::Update - A record of an update
 
 =head1 DESCRIPTION
 
@@ -53,16 +51,5 @@ the attribute names as keys.
 Returns the values updated as a hash reference, with the attribute
 names as keys. These values are provided as-is, so they may include
 objects passed to C<update()>
-
-=head1 AUTHOR
-
-Dave Rolsky, C<< <autarch@urth.org> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Dave Rolsky, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
 
 =cut
