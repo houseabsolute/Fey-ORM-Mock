@@ -231,8 +231,8 @@ is(
     my $user = User->new( user_id => 2 );
 
     is(
-        $user->user_id(), 2,
-        'got constructor value for class'
+        $user->user_id(), 42,
+        'got database value for class even with a value passed in the constructor'
     );
     is(
         $user->username(), 'Doug',
