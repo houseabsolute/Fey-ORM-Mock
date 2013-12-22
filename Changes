@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.06   2013-12-22
+
 - Removed used of deprecated Class::MOP::load_class().
 
 
