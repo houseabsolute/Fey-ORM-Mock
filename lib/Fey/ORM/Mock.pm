@@ -3,7 +3,7 @@ package Fey::ORM::Mock;
 use strict;
 use warnings;
 
-use Class::MOP;
+use Class::Load qw( load_class );
 use DBD::Mock;
 use Fey::DBIManager;
 use Fey::Object::Mock::Schema;
@@ -53,7 +53,7 @@ sub _replace_superclass {
     my $class      = shift;
     my $superclass = shift;
 
-    Class::MOP::load_class($class);
+    load_class($class);
 
     my $meta = $class->meta();
 

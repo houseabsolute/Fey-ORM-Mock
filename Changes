@@ -1,3 +1,8 @@
+{{$NEXT}}
+
+- Removed used of deprecated Class::MOP::load_class().
+
+
 0.05    2010-12-12
 
 - Fix a test that failed with Fey::ORM 0.33+.
